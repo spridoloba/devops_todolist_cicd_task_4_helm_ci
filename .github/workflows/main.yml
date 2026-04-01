@@ -57,7 +57,7 @@ jobs:
           path: .
 
       - name: Upload helm artifacts
-        if: ${{ github.ref_name == 'main' }}
+        
         uses: actions/upload-artifact@v4
         with:
           name: helm-artifacts
@@ -65,7 +65,7 @@ jobs:
 
   docker-ci:
     runs-on: ubuntu-latest
-    if: ${{ github.ref_name == 'main' }}
+    
     needs: python-ci
     steps:
 
@@ -90,7 +90,7 @@ jobs:
 
   helm-ci:
       runs-on: ubuntu-latest
-      if: ${{ github.ref_name == 'main' }}
+      
       needs:
         - python-ci
         - docker-ci
@@ -105,13 +105,13 @@ jobs:
             path: .
 
         - name: Execute helm template for the chart
-          run: helm template todoapp ./helm-charts/todoapp
+          run: helm template todoapp ./todoapp
 
         - name: Execute helm lint for the chart
-          run: helm lint ./helm-charts/todoapp
+          run: helm lint ./todoapp
 
         - name: Package the chart
-          run: helm package ./helm-charts/todoapp --destination ./packaged-charts
+          run: helm package ./todoapp --destination ./packaged-charts
 
         - name: Upload the chart package to the GitHub artifacts
           uses: actions/upload-artifact@v4
